@@ -7,6 +7,13 @@ export interface UserPayload {
   email: string;
 }
 
+export const admins = [
+  "mark.yehia@gmail.com",
+  "waelwadiewilliam@gmail.com",
+  "admin@labelled-eg.com",
+  "storage.labelled@gmail.com",
+];
+
 declare global {
   namespace Express {
     interface Request {
