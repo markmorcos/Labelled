@@ -1,0 +1,36 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/common/k8s/*
+    - ./infra/development/k8s/*
+deploy:
+  kubectl: {}
+build:
+  local:
+    push: true
+  artifacts:
+    - image: markmorcos/labelled-auth
+      context: auth
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: markmorcos/labelled-orders
+      context: orders
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: markmorcos/labelled-web
+      context: web
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
+      docker:
+        dockerfile: Dockerfile
