@@ -3,6 +3,7 @@ import { verify } from "jsonwebtoken";
 
 export interface UserPayload {
   id: string;
+  vendors: string[];
   email: string;
 }
 
