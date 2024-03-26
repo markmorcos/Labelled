@@ -4,8 +4,8 @@ import { randomBytes } from "crypto";
 
 import { validateRequest } from "@labelled/common";
 
-import { User } from "../models/user";
-import * as mailer from "../services/mailer";
+import { User } from "../../models/user";
+import * as mailer from "../../services/mailer";
 
 const router = express.Router();
 

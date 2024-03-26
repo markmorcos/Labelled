@@ -2,10 +2,10 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { randomBytes } from "crypto";
 
-import { BadRequestError, validateRequest } from "@labelled/common";
+import { NotFoundError, validateRequest } from "@labelled/common";
 
-import { User } from "../models/user";
-import * as mailer from "../services/mailer";
+import { User } from "../../models/user";
+import * as mailer from "../../services/mailer";
 
 const router = express.Router();
 
@@ -16,8 +16,15 @@ router.post(
   async (req: Request, res: Response) => {
     const { email } = req.body;
 
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new NotFoundError();
+    }
+
     const code = randomBytes(16).toString("hex");
-    const user = await User.createIfNotExists({ email, code });
+    user.set({ code });
+    await user.save();
+
     await mailer.send({ email, code });
 
     res.status(200).send(user);

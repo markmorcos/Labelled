@@ -36,7 +36,7 @@ userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
     user = new User(attrs);
   }
 
-  user.set({ code: attrs.code });
+  user.set({ vendors: attrs.vendors, code: attrs.code });
   await user.save();
 
   return user;

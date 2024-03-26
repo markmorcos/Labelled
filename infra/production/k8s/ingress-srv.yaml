@@ -31,41 +31,11 @@ spec:
     - host: www.labelled-eg.com
       http:
         paths:
-          - path: /api/events/?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: events-srv
-                port:
-                  number: 3000
-    - host: www.labelled-eg.com
-      http:
-        paths:
-          - path: /api/tickets/?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: tickets-srv
-                port:
-                  number: 3000
-    - host: www.labelled-eg.com
-      http:
-        paths:
           - path: /api/orders/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: orders-srv
-                port:
-                  number: 3000
-    - host: www.labelled-eg.com
-      http:
-        paths:
-          - path: /api/payments/?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: payments-srv
                 port:
                   number: 3000
     - host: www.labelled-eg.com

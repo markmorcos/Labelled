@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Table from "react-bootstrap/Table";
-
-import { OrderStatus } from "@labelled/common";
+import { formatDistance } from "date-fns";
 
 import redirect from "../../api/redirect";
 
@@ -13,25 +12,23 @@ const OrdersIndex = ({ orders }) => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Price</th>
-            <th>Event</th>
-            <th>Status</th>
+            <th>Amount</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map(({ id, ticket, status }) => (
-            <tr key={id}>
+          {orders.map(({ id, name, amount, createdAt }) => (
+            <tr key={name}>
               <td>
-                <Link href="/">{id}</Link>
+                <Link href={`/orders/${encodeURIComponent(`${id}`)}`}>
+                  {name}
+                </Link>
               </td>
-              <td>€0</td>
+              <td>EGP {amount}</td>
               <td>
-                <Link href="/">Event</Link>
-              </td>
-              <td>
-                <span className="badge rounded-pill text-bg-success">
-                  Success
-                </span>
+                {formatDistance(createdAt, new Date(), {
+                  addSuffix: true,
+                })}
               </td>
             </tr>
           ))}

@@ -4,12 +4,6 @@ import { DatabaseConnectionError } from "@labelled/common";
 
 import { app } from "./app";
 import { nats } from "./nats";
-import { EventCreatedListener } from "./events/listeners/event-created-listener";
-import { EventUpdatedListener } from "./events/listeners/event-updated-listener";
-import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
-import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
-import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
-import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -27,6 +21,12 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error("NATS_URL must be defined");
   }
+  if (!process.env.SHOPIFY_KEY) {
+    throw new Error("SHOPIFY_KEY must be defined");
+  }
+  if (!process.env.SHOPIFY_STORE) {
+    throw new Error("SHOPIFY_STORE must be defined");
+  }
 
   try {
     await nats.connect(
@@ -40,13 +40,6 @@ const start = async () => {
     });
     process.on("SIGINT", () => nats.client.close());
     process.on("SIGTERM", () => nats.client.close());
-
-    new EventCreatedListener(nats.client).listen();
-    new EventUpdatedListener(nats.client).listen();
-    new ExpirationCompleteListener(nats.client).listen();
-    new PaymentCreatedListener(nats.client).listen();
-    new TicketCreatedListener(nats.client).listen();
-    new TicketUpdatedListener(nats.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");

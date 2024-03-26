@@ -5,11 +5,15 @@ import cookieSession from "cookie-session";
 
 import { errorHandler, NotFoundError } from "@labelled/common";
 
-import { currentUserRouter } from "./routes/current-user";
-import { signInRouter } from "./routes/sign-in";
-import { signOutRouter } from "./routes/sign-out";
-import { signUpRouter } from "./routes/sign-up";
-import { completeRouter } from "./routes/complete";
+import { completeRouter } from "./routes/auth/complete";
+import { currentUserRouter } from "./routes/auth/current-user";
+import { signInRouter } from "./routes/auth/sign-in";
+import { signOutRouter } from "./routes/auth/sign-out";
+import { signUpRouter } from "./routes/auth/sign-up";
+
+import { indexAuthRouter } from "./routes/users";
+import { patchAuthRouter } from "./routes/users/update";
+import { readAuthRouter } from "./routes/users/read";
 
 export const app = express();
 
@@ -23,11 +27,15 @@ app.use(
   })
 );
 
+app.use(completeRouter);
 app.use(currentUserRouter);
 app.use(signInRouter);
 app.use(signOutRouter);
 app.use(signUpRouter);
-app.use(completeRouter);
+
+app.use(readAuthRouter);
+app.use(indexAuthRouter);
+app.use(patchAuthRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

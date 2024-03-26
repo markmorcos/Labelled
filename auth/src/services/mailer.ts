@@ -15,13 +15,15 @@ const templateId = "d-8fa9b11afbe64caf974e10c0cfd1bcc5";
 export const send = ({ email, code }: Payload) => {
   sgMail.setApiKey(process.env.SENDGRID_KEY!);
   return sgMail.send({
-    from: "Labelled <admin@tazaker.org>",
+    from: "Labelled <admin@labelled-eg.com>",
     templateId,
     personalizations: [
       {
         to: email,
         dynamicTemplateData: {
-          url: `${baseURL}/api/auth/complete?email=${email}&code=${code}`,
+          url: `${baseURL}/api/auth/complete?email=${encodeURIComponent(
+            email
+          )}&code=${code}`,
         },
       },
     ],

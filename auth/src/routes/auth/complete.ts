@@ -4,18 +4,21 @@ import { sign } from "jsonwebtoken";
 
 import { BadRequestError, validateRequest } from "@labelled/common";
 
-import { User } from "../models/user";
+import { User } from "../../models/user";
 
 const router = express.Router();
 
 router.get(
   "/api/auth/complete",
-  [query("email").isEmail().withMessage("Email must be valid")],
+  [query("email").notEmpty().withMessage("Email must be valid")],
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, code } = req.query;
 
-    const user = await User.findOne({ email, code } as {
+    const user = await User.findOne({
+      email: decodeURIComponent(email as string),
+      code,
+    } as {
       email: string;
       code: string;
     });
@@ -27,7 +30,7 @@ router.get(
     await user.save();
 
     req.session!.jwt = sign(
-      { id: user.id, email: user.email },
+      { id: user.id, vendors: user.vendors, email: user.email },
       process.env.JWT_KEY!
     );
 
