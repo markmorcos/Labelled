@@ -24,10 +24,10 @@ const VendorsIndex = ({ users, currentUser }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map(({ id, email, vendors = [] }) => (
+          {users.map(({ id, email, brands = [] }) => (
             <tr key={email}>
               <td>{email}</td>
-              <td>{vendors.join(",")}</td>
+              <td>{brands.join(",")}</td>
               <td>
                 {admins.includes(currentUser.email) && (
                   <Link

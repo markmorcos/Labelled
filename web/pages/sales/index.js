@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Table from "react-bootstrap/Table";
 
 import redirect from "../../api/redirect";
@@ -6,25 +5,23 @@ import redirect from "../../api/redirect";
 const ProductsIndex = ({ products }) => {
   return (
     <div>
-      <h1>Products</h1>
+      <h1>Sales</h1>
       <Table responsive>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Profit</th>
+            <th>Product</th>
             <th>Brand</th>
+            <th>Quantity</th>
+            <th>Profit</th>
           </tr>
         </thead>
         <tbody>
-          {products.map(({ id, sku, product }) => (
+          {products.map(({ id, sku, product, quantity, profit }) => (
             <tr key={id}>
-              <td>
-                <Link href={`/products/${encodeURIComponent(`${id}`)}`}>
-                  {sku}
-                </Link>
-              </td>
-              <td>0</td>
+              <td>{sku}</td>
               <td>{product.vendor}</td>
+              <td>{quantity}</td>
+              <td>E£ {profit}</td>
             </tr>
           ))}
         </tbody>

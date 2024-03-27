@@ -4,12 +4,12 @@ import useRequest from "../../hooks/use-request";
 
 export default () => {
   const [email, setEmail] = useState("");
-  const [vendors, setVendors] = useState("");
+  const [brands, setBrands] = useState("");
 
   const { doRequest, loading, errors } = useRequest({
     url: "/api/auth/sign-up",
     method: "post",
-    body: { email, vendors: vendors.split(",") },
+    body: { email, brands: brands.split(",") },
     onSuccess: () => Router.push("/vendors"),
   });
 
@@ -43,8 +43,8 @@ export default () => {
           id="brands"
           className="form-control"
           type="text"
-          value={vendors}
-          onChange={(e) => setVendors(e.target.value)}
+          value={brands}
+          onChange={(e) => setBrands(e.target.value)}
           disabled={loading}
         />
       </div>

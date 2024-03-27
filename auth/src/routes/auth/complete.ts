@@ -30,7 +30,7 @@ router.get(
     await user.save();
 
     req.session!.jwt = sign(
-      { id: user.id, vendors: user.vendors, email: user.email },
+      { id: user.id, brands: user.brands, email: user.email },
       process.env.JWT_KEY!
     );
 

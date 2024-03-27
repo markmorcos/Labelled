@@ -13,14 +13,14 @@ router.post(
   "/api/auth/sign-up",
   [
     body("email").isEmail().withMessage("Email must be valid"),
-    body("vendors").isArray(),
+    body("brands").isArray(),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, vendors } = req.body;
+    const { email, brands } = req.body;
 
     const code = randomBytes(16).toString("hex");
-    const user = await User.createIfNotExists({ email, vendors, code });
+    const user = await User.createIfNotExists({ email, brands, code });
 
     await mailer.send({ email, code });
 

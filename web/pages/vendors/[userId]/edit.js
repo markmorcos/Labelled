@@ -5,12 +5,12 @@ import redirect from "../../../api/redirect";
 import useRequest from "../../../hooks/use-request";
 
 const VendorEdit = ({ user }) => {
-  const [vendors, setVendors] = useState(user.vendors.join(","));
+  const [brands, setBrands] = useState(user.brands.join(","));
 
   const { doRequest, loading, errors } = useRequest({
     url: `/api/auth/users/${user.id}`,
     method: "patch",
-    body: { vendors: vendors.split(",") },
+    body: { brands: brands.split(",") },
     onSuccess: () => Router.push("/vendors"),
   });
 
@@ -30,8 +30,8 @@ const VendorEdit = ({ user }) => {
           id="brands"
           className="form-control"
           type="text"
-          value={vendors}
-          onChange={(e) => setVendors(e.target.value)}
+          value={brands}
+          onChange={(e) => setBrands(e.target.value)}
           disabled={loading}
         />
       </div>

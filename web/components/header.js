@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
+import { admins } from "@labelled/common";
+
 import useRequest from "../hooks/use-request";
 
 export default ({ currentUser }) => {
@@ -16,9 +18,10 @@ export default ({ currentUser }) => {
 
   const links = currentUser
     ? [
-        { label: "Vendors", href: "/vendors" },
-        { label: "Products", href: "/products" },
-        { label: "Inventory", href: "/Inventory" },
+        ...(admins.includes(currentUser.email)
+          ? [{ label: "Vendors", href: "/vendors" }]
+          : []),
+        { label: "Sales", href: "/sales" },
       ]
     : [{ label: "Start", href: "/start" }];
 

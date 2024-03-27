@@ -16,12 +16,12 @@ const router = express.Router();
 
 router.patch(
   "/api/auth/users/:userId",
-  [param("userId").isMongoId(), body("vendors").isArray()],
+  [param("userId").isMongoId(), body("brands").isArray()],
   validateRequest,
   currentUser,
   requireAuth,
   async (req: Request, res: Response) => {
-    const { vendors } = req.body;
+    const { brands } = req.body;
 
     const user = await User.findById(req.params.userId);
 
@@ -33,7 +33,7 @@ router.patch(
       throw new NotAuthorizedError();
     }
 
-    user.set({ vendors });
+    user.set({ brands });
     await user.save();
 
     return res.status(204).send(user);

@@ -2,7 +2,7 @@ import { Document, Model, Schema, model } from "mongoose";
 
 export interface UserAttrs {
   email: string;
-  vendors?: string[];
+  brands?: string[];
   code: string;
 }
 
@@ -15,7 +15,7 @@ interface UserModel extends Model<UserDoc> {
 const userSchema: Schema<UserDoc> = new Schema(
   {
     email: { type: String, required: true },
-    vendors: [{ type: String, required: true }],
+    brands: [{ type: String, required: true }],
     code: { type: String },
   },
   {
@@ -36,7 +36,7 @@ userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
     user = new User(attrs);
   }
 
-  user.set({ vendors: attrs.vendors, code: attrs.code });
+  user.set({ brands: attrs.brands, code: attrs.code });
   await user.save();
 
   return user;
