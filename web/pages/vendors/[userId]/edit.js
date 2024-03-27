@@ -36,7 +36,7 @@ const VendorEdit = ({ user }) => {
         />
       </div>
       <button type="submit" className="btn btn-primary" disabled={loading}>
-        Create
+        Update
       </button>
     </form>
   );

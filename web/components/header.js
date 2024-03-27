@@ -17,7 +17,7 @@ export default ({ currentUser }) => {
   const links = currentUser
     ? [
         { label: "Vendors", href: "/vendors" },
-        { label: "Orders", href: "/orders" },
+        { label: "Products", href: "/products" },
         { label: "Inventory", href: "/Inventory" },
       ]
     : [{ label: "Start", href: "/start" }];
@@ -41,7 +41,7 @@ export default ({ currentUser }) => {
             {currentUser && (
               <li className="nav-item">
                 <button className="nav-link" onClick={() => signOut()}>
-                  Sign Out
+                  Sign Out ({currentUser.email})
                 </button>
               </li>
             )}

@@ -20,11 +20,11 @@ spec:
     - host: labelled.dev
       http:
         paths:
-          - path: /api/orders/?(.*)
+          - path: /api/products/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: orders-srv
+                name: products-srv
                 port:
                   number: 3000
     - host: labelled.dev

@@ -18,8 +18,8 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    - image: markmorcos/labelled-orders
-      context: orders
+    - image: markmorcos/labelled-products
+      context: products
       sync:
         manual:
           - src: "src/**/*.ts"

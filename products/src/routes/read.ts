@@ -11,9 +11,9 @@ import {
 const router = express.Router();
 
 router.get(
-  "/api/orders/:id",
+  "/api/products/:id",
   requireAuth,
-  [param("id").isMongoId()],
+  [param("id").notEmpty()],
   validateRequest,
   async (req: Request, res: Response) => {
     res.send({});
