@@ -139,7 +139,7 @@ const getAllOrders = async (skus: string[]) => {
 const router = express.Router();
 
 router.get(
-  "/api/products",
+  "/api/queries/sales",
   requireAuth,
   async (req: Request, res: Response) => {
     const { email, brands } = req.currentUser!;
@@ -173,4 +173,4 @@ router.get(
   }
 );
 
-export { router as indexOrderRouter };
+export { router as salesRouter };

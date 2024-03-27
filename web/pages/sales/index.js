@@ -2,7 +2,7 @@ import Table from "react-bootstrap/Table";
 
 import redirect from "../../api/redirect";
 
-const ProductsIndex = ({ products }) => {
+const SalesIndex = ({ sales }) => {
   return (
     <div>
       <h1>Sales</h1>
@@ -16,7 +16,7 @@ const ProductsIndex = ({ products }) => {
           </tr>
         </thead>
         <tbody>
-          {products.map(({ id, sku, product, quantity, profit }) => (
+          {sales.map(({ id, sku, product, quantity, profit }) => (
             <tr key={id}>
               <td>{sku}</td>
               <td>{product.vendor}</td>
@@ -30,13 +30,13 @@ const ProductsIndex = ({ products }) => {
   );
 };
 
-ProductsIndex.getInitialProps = async (context, client) => {
+SalesIndex.getInitialProps = async (context, client) => {
   try {
-    const { data: products } = await client.get("/api/products");
-    return { products };
+    const { data: sales } = await client.get("/api/queries/sales");
+    return { sales };
   } catch (error) {
     return redirect({ context, path: "/" });
   }
 };
 
-export default ProductsIndex;
+export default SalesIndex;

@@ -18,8 +18,8 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    - image: markmorcos/labelled-products
-      context: products
+    - image: markmorcos/labelled-queries
+      context: queries
       sync:
         manual:
           - src: "src/**/*.ts"

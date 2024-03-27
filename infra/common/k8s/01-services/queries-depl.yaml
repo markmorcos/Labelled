@@ -1,39 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: products-depl
+  name: queries-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: products
+      app: queries
   template:
     metadata:
       labels:
-        app: products
+        app: queries
     spec:
       containers:
-        - name: products
-          image: markmorcos/labelled-products
+        - name: queries
+          image: markmorcos/labelled-queries
           envFrom:
             - configMapRef:
                 name: global-config
           env:
-            - name: MONGO_URI
-              value: "mongodb://products-mongo-srv:27017/products"
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
-            - name: NATS_CLUSTER_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: NATS_CLIENT_ID
-              value: labelled
-            - name: NATS_URL
-              value: "http://nats-srv:4222"
             - name: SHOPIFY_KEY
               valueFrom:
                 secretKeyRef:
@@ -45,12 +35,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: products-srv
+  name: queries-srv
 spec:
   selector:
-    app: products
+    app: queries
   ports:
-    - name: products
+    - name: queries
       protocol: TCP
       port: 3000
       targetPort: 3000

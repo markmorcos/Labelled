@@ -31,11 +31,11 @@ spec:
     - host: www.labelled-eg.com
       http:
         paths:
-          - path: /api/products/?(.*)
+          - path: /api/queries/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: products-srv
+                name: queries-srv
                 port:
                   number: 3000
     - host: www.labelled-eg.com

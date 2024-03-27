@@ -20,11 +20,11 @@ spec:
     - host: labelled.dev
       http:
         paths:
-          - path: /api/products/?(.*)
+          - path: /api/queries/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: products-srv
+                name: queries-srv
                 port:
                   number: 3000
     - host: labelled.dev

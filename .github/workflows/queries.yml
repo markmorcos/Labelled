@@ -1,17 +1,17 @@
-name: products
+name: queries
 
 on:
   workflow_dispatch: {}
   push:
     paths:
-      - "products/**"
+      - "queries/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd products && npm install && npm run build
+      - run: cd queries && npm install && npm run build
 
   deploy:
     runs-on: ubuntu-latest
@@ -19,14 +19,14 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd products && docker build . -f Dockerfile.production -t markmorcos/labelled-products
+      - run: cd queries && docker build . -f Dockerfile.production -t markmorcos/labelled-queries
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/labelled-products
+      - run: docker push markmorcos/labelled-queries
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save labelled
-      - run: kubectl rollout restart deployment products-depl
+      - run: kubectl rollout restart deployment queries-depl
