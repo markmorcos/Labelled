@@ -37,7 +37,7 @@ LandingPage.getInitialProps = async (context, client) => {
     const { data: products } = await client.get("/api/queries/products");
     return { products };
   } catch (error) {
-    return redirect({ context, path: "/" });
+    return redirect({ context, path: "/start" });
   }
 };
 
