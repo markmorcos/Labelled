@@ -5,6 +5,7 @@ import cookieSession from "cookie-session";
 
 import { currentUser, errorHandler, NotFoundError } from "@labelled/common";
 
+import { productsRouter } from "./routes/products";
 import { salesRouter } from "./routes/sales";
 
 export const app = express();
@@ -20,6 +21,7 @@ app.use(
 );
 app.use(currentUser);
 
+app.use(productsRouter);
 app.use(salesRouter);
 
 app.all("*", async () => {

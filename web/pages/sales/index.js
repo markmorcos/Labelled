@@ -3,29 +3,50 @@ import Table from "react-bootstrap/Table";
 import redirect from "../../api/redirect";
 
 const SalesIndex = ({ sales }) => {
-  return (
-    <div>
-      <h1>Sales</h1>
-      <Table responsive>
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Brand</th>
-            <th>Quantity</th>
-            <th>Profit</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sales.map(({ id, sku, product, quantity, profit }) => (
+  const table = (
+    <Table responsive>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Brand</th>
+          <th>Original Sold Quantity</th>
+          <th>Original Sold Amount</th>
+          <th>Discounts</th>
+          <th>Current Sold Quantity</th>
+          <th>Current Sold Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sales.map(
+          ({
+            id,
+            sku,
+            product,
+            originalQuantity,
+            originalAmount,
+            currentDiscounts,
+            currentQuantity,
+            currentAmount,
+          }) => (
             <tr key={id}>
               <td>{sku}</td>
               <td>{product.vendor}</td>
-              <td>{quantity}</td>
-              <td>E£ {profit}</td>
+              <td>{originalQuantity}</td>
+              <td>E£ {originalAmount}</td>
+              <td>E£ {currentDiscounts}</td>
+              <td>{currentQuantity}</td>
+              <td>E£ {currentAmount}</td>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          )
+        )}
+      </tbody>
+    </Table>
+  );
+
+  return (
+    <div>
+      <h1>Sales</h1>
+      {sales.length > 0 ? table : "No sales yet"}
     </div>
   );
 };
