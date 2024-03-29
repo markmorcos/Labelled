@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { param } from "express-validator";
 
 import {
+  BadRequestError,
   NotAuthorizedError,
   NotFoundError,
   admins,
@@ -30,6 +31,9 @@ router.delete(
     const user = await User.findById(req.params.userId);
     if (!user) {
       throw new NotFoundError();
+    }
+    if (user.email === email) {
+      throw new BadRequestError("You cannot delete your own account");
     }
 
     await user.deleteOne();
