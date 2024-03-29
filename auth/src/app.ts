@@ -14,6 +14,7 @@ import { signUpRouter } from "./routes/auth/sign-up";
 import { indexAuthRouter } from "./routes/users";
 import { patchAuthRouter } from "./routes/users/update";
 import { readAuthRouter } from "./routes/users/read";
+import { deleteAuthRouter } from "./routes/users/delete";
 
 export const app = express();
 
@@ -36,6 +37,7 @@ app.use(signUpRouter);
 app.use(readAuthRouter);
 app.use(indexAuthRouter);
 app.use(patchAuthRouter);
+app.use(deleteAuthRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

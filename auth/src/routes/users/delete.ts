@@ -14,7 +14,7 @@ import { User } from "../../models/user";
 
 const router = express.Router();
 
-router.get(
+router.delete(
   "/api/auth/users/:userId",
   [param("userId").isMongoId()],
   validateRequest,
@@ -32,8 +32,10 @@ router.get(
       throw new NotFoundError();
     }
 
-    return res.status(200).send(user);
+    await user.deleteOne();
+
+    return res.status(204).send({ success: true });
   }
 );
 
-export { router as readAuthRouter };
+export { router as deleteAuthRouter };
