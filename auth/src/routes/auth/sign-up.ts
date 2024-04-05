@@ -1,11 +1,10 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { randomBytes } from "crypto";
 
 import { validateRequest } from "@labelled/common";
 
 import { User } from "../../models/user";
-import * as mailer from "../../services/mailer";
+import { sign } from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -13,16 +12,20 @@ router.post(
   "/api/auth/sign-up",
   [
     body("email").isEmail().withMessage("Email must be valid"),
-    body("brands").isArray(),
+    body("password")
+      .isLength({ min: 4, max: 20 })
+      .withMessage("Password must be between 4 and 20 characters"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, brands } = req.body;
+    const { email, password, brands } = req.body;
 
-    const code = randomBytes(16).toString("hex");
-    const user = await User.createIfNotExists({ email, brands, code });
+    const user = await User.createIfNotExists({ email, password, brands });
 
-    await mailer.send({ email, code });
+    req.session!.jwt = sign(
+      { id: user.id, email: user.email, brands: user.brands },
+      process.env.JWT_KEY!
+    );
 
     res.status(200).send(user);
   }

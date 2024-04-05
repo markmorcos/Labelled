@@ -5,7 +5,6 @@ import cookieSession from "cookie-session";
 
 import { errorHandler, NotFoundError } from "@labelled/common";
 
-import { completeRouter } from "./routes/auth/complete";
 import { currentUserRouter } from "./routes/auth/current-user";
 import { signInRouter } from "./routes/auth/sign-in";
 import { signOutRouter } from "./routes/auth/sign-out";
@@ -28,7 +27,6 @@ app.use(
   })
 );
 
-app.use(completeRouter);
 app.use(currentUserRouter);
 app.use(signInRouter);
 app.use(signOutRouter);

@@ -1,9 +1,11 @@
 import { Document, Model, Schema, model } from "mongoose";
 
+import { toHash } from "../services/password";
+
 export interface UserAttrs {
   email: string;
+  password: string;
   brands?: string[];
-  code: string;
 }
 
 type UserDoc = Document & UserAttrs;
@@ -15,20 +17,29 @@ interface UserModel extends Model<UserDoc> {
 const userSchema: Schema<UserDoc> = new Schema(
   {
     email: { type: String, required: true },
+    password: { type: String, required: true },
     brands: [{ type: String, required: true }],
-    code: { type: String },
   },
   {
     toJSON: {
       transform: (doc, ret) => {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.code;
+        delete ret.password;
       },
       versionKey: false,
     },
   }
 );
+
+userSchema.pre("save", async function (done) {
+  if (this.isModified("password")) {
+    const hashed = toHash(this.get("password"));
+    this.set("password", hashed);
+  }
+
+  done();
+});
 
 userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
   let user = await User.findOne({ email: attrs.email });
@@ -36,7 +47,6 @@ userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
     user = new User(attrs);
   }
 
-  user.set({ brands: attrs.brands, code: attrs.code });
   await user.save();
 
   return user;

@@ -31,22 +31,32 @@ router.get(
     const sales: { [sku: string]: Sale } = {};
     for (const order of orders) {
       for (const lineItem of order.lineItems.edges) {
-        sales[lineItem.node.sku] = {
-          originalQuantity:
-            (sales[lineItem.node.sku]?.originalQuantity || 0) +
-            Number(lineItem.node.originalUnitPriceSet.shopMoney.amount),
-          originalAmount: Number(
-            lineItem.node.originalUnitPriceSet.shopMoney.amount
-          ),
-          currentDiscounts:
-            (sales[lineItem.node.sku]?.currentDiscounts || 0) +
-            Number(lineItem.node.totalDiscountSet.shopMoney.amount),
-          currentQuantity:
-            (sales[lineItem.node.sku]?.currentQuantity || 0) +
-            Number(lineItem.node.currentQuantity),
+        const sku = lineItem.node.sku;
+        const originalUnitAmount = Number(
+          lineItem.node.originalUnitPriceSet.shopMoney.amount
+        );
+        const originalLineItemQuantity = Number(lineItem.node.quantity);
+        const currentLineItemDiscounts = Number(
+          lineItem.node.totalDiscountSet.shopMoney.amount
+        );
+        const currentLineItemQuantity = Number(lineItem.node.currentQuantity);
+
+        const {
+          originalQuantity = 0,
+          originalAmount = 0,
+          currentDiscounts = 0,
+          currentQuantity = 0,
+          currentAmount = 0,
+        } = sales[sku] || {};
+
+        sales[sku] = {
+          originalQuantity: originalQuantity + originalLineItemQuantity,
+          originalAmount:
+            originalAmount + originalLineItemQuantity * originalUnitAmount,
+          currentDiscounts: currentDiscounts + currentLineItemDiscounts,
+          currentQuantity: currentQuantity + currentLineItemQuantity,
           currentAmount:
-            (sales[lineItem.node.sku]?.currentAmount || 0) +
-            Number(lineItem.node.originalUnitPriceSet.shopMoney.amount),
+            currentAmount + currentLineItemQuantity * originalUnitAmount,
         };
       }
     }
