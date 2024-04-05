@@ -43,7 +43,14 @@ userSchema.pre("save", async function (done) {
 
 userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
   let user = await User.findOne({ email: attrs.email });
-  if (!user) {
+  if (user) {
+    if (attrs.password) {
+      user.set("password", attrs.password);
+    }
+    if (attrs.brands) {
+      user.set("brands", attrs.brands);
+    }
+  } else {
     user = new User(attrs);
   }
 
