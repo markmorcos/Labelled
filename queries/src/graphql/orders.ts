@@ -1,6 +1,6 @@
 import { base } from "./base";
 
-interface Order {
+export interface Order {
   id: string;
   subtotalLineItemsQuantity: number;
   originalTotalPriceSet: {

@@ -2,16 +2,8 @@ import express, { Request, Response } from "express";
 
 import { admins, requireAuth } from "@labelled/common";
 
-import { productVariantsQuery } from "../graphql/products";
-import { ordersQuery } from "../graphql/orders";
-
-interface Sale {
-  originalQuantity: number;
-  originalAmount: number;
-  currentDiscounts: number;
-  currentQuantity: number;
-  currentAmount: number;
-}
+import { Product } from "../graphql/products";
+import { Queries, fetchKey } from "../redis";
 
 const router = express.Router();
 
@@ -20,12 +12,16 @@ router.get(
   requireAuth,
   async (req: Request, res: Response) => {
     const { email, brands } = req.currentUser!;
+    const products: Product[] = (await fetchKey(Queries.products)) || [];
 
-    const productVariants = await productVariantsQuery(
-      admins.includes(email) ? "" : `vendor:'${brands.join("' OR '")}'`
-    );
-
-    res.send(productVariants);
+    res
+      .status(200)
+      .send(
+        products.filter(
+          ({ product }) =>
+            admins.includes(email) || brands.includes(product.vendor)
+        )
+      );
   }
 );
 

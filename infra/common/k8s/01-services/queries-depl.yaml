@@ -31,6 +31,8 @@ spec:
                   key: SHOPIFY_KEY
             - name: SHOPIFY_STORE
               value: "5c1dc6-2.myshopify.com"
+            - name: REDIS_HOST
+              value: queries-redis-srv
 ---
 apiVersion: v1
 kind: Service

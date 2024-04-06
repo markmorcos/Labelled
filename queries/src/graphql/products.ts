@@ -1,8 +1,9 @@
 import { base } from "./base";
 
-interface Product {
+export interface Product {
   id: string;
   sku: string;
+  displayName: string;
   title: string;
   price: number;
   product: {
@@ -26,6 +27,7 @@ export const productVariantsQuery = async (
     `
     id
     sku
+    displayName
     title
     price
     product {

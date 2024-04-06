@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 
 import { admins, requireAuth } from "@labelled/common";
 
-import { productVariantsQuery } from "../graphql/products";
-import { ordersQuery } from "../graphql/orders";
+import { Product } from "../graphql/products";
+import { Order } from "../graphql/orders";
+import { Queries, fetchKey } from "../redis";
 
 interface Sale {
   originalQuantity: number;
@@ -21,11 +22,16 @@ router.get(
   async (req: Request, res: Response) => {
     const { email, brands } = req.currentUser!;
 
-    const productVariants = await productVariantsQuery(
-      admins.includes(email) ? "" : `vendor:'${brands.join("' OR '")}'`
+    const productVariants = (
+      (await fetchKey(Queries.products)) as Product[]
+    ).filter(
+      ({ product }) => admins.includes(email) || brands.includes(product.vendor)
     );
-    const orders = await ordersQuery(
-      `sku:'${productVariants.map(({ sku }) => sku).join("' OR '")}'`
+
+    const skus = productVariants.map(({ sku }) => sku);
+    const orders = ((await fetchKey(Queries.orders)) as Order[]).filter(
+      ({ lineItems }) =>
+        lineItems.edges.filter(({ node }) => skus.includes(node.sku)).length > 0
     );
 
     const sales: { [sku: string]: Sale } = {};
