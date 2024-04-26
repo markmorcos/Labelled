@@ -70,7 +70,7 @@ const SalesIndex = () => {
     <div>
       <h1>Sales</h1>
       <div className="mb-3">
-        <label for="date">Starting from:</label>
+        <label htmlFor="date">Starting from:</label>
         <input
           id="date"
           className="form-control"
