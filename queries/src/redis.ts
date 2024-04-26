@@ -21,12 +21,8 @@ const queries = [
   { key: Queries.orders, query: ordersQuery },
 ];
 
-const updateCache = async (key?: string) => {
-  if (!key) {
-    console.log("[CACHE] Updating all cache");
-  }
-
-  await Promise.all(
+const updateCache = async (key?: string) =>
+  Promise.all(
     queries
       .filter((query) => !key || key === query.key)
       .map(async ({ key, query }) =>
@@ -34,18 +30,11 @@ const updateCache = async (key?: string) => {
       )
   );
 
-  if (!key) {
-    console.log("[CACHE] updated all cache");
-  }
-};
-
 export const fetchKey = async (key: string): Promise<any> => {
   const cachedProducts = await client.get(key);
   if (cachedProducts) {
-    console.log(`[CACHE HIT] Returning ${key} cache`);
     return JSON.parse(cachedProducts);
   }
-  console.log(`[CACHE MISS] Updating ${key} cache`);
   await updateCache(key);
   return fetchKey(key);
 };

@@ -5,11 +5,18 @@ export default ({ url, method, body, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
 
-  const doRequest = async (props = {}) => {
+  const doRequest = async ({ query, ...props } = {}) => {
+    const queryParams = query
+      ? `?${new URLSearchParams(query).toString()}`
+      : "";
+
     try {
       setLoading(true);
       setErrors(null);
-      const { data } = await axios[method](url, { ...body, ...props });
+      const { data } = await axios[method](`${url}${queryParams}`, {
+        ...body,
+        ...props,
+      });
       onSuccess?.(data);
       return data;
     } catch (error) {

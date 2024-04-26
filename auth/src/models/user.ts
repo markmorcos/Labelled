@@ -18,7 +18,7 @@ const userSchema: Schema<UserDoc> = new Schema(
   {
     email: { type: String, required: true },
     password: { type: String, required: true },
-    brands: [{ type: String, required: true }],
+    brands: [{ type: String }],
   },
   {
     toJSON: {

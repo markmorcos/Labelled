@@ -5,12 +5,13 @@ import useRequest from "../../hooks/use-request";
 
 export default () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [brands, setBrands] = useState("");
 
   const { doRequest, loading, errors } = useRequest({
     url: "/api/auth/sign-up",
     method: "post",
-    body: { email, brands: brands.split(",") },
+    body: { email, password, brands: brands.split(",") },
     onSuccess: () => Router.push("/vendors"),
   });
 
@@ -37,7 +38,20 @@ export default () => {
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="email" className="form-label">
+        <label htmlFor="password" className="form-label">
+          Password
+        </label>
+        <input
+          id="password"
+          className="form-control"
+          type="text"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="brands" className="form-label">
           Brands (comma separated)
         </label>
         <input

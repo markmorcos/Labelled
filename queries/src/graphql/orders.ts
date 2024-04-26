@@ -21,6 +21,7 @@ export interface Order {
   };
   lineItems: { edges: LineItem[] };
   returns: { edges: Return[] };
+  createdAt: string;
 }
 
 interface LineItem {
@@ -96,7 +97,8 @@ export const ordersQuery = async (query?: string): Promise<Order[]> => {
           }
         }
       }
-    }`,
+    }
+    createdAt`,
     query
   );
   // returns(first: 5) {

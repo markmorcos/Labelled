@@ -20,6 +20,7 @@ router.get(
   "/api/queries/sales",
   requireAuth,
   async (req: Request, res: Response) => {
+    const date = req.query.date || "2024-04-16";
     const { email, brands } = req.currentUser!;
 
     const productVariants = (
@@ -29,10 +30,15 @@ router.get(
     );
 
     const skus = productVariants.map(({ sku }) => sku);
-    const orders = ((await fetchKey(Queries.orders)) as Order[]).filter(
-      ({ lineItems }) =>
-        lineItems.edges.filter(({ node }) => skus.includes(node.sku)).length > 0
-    );
+    const orders = ((await fetchKey(Queries.orders)) as Order[])
+      .filter(
+        ({ createdAt }) => new Date(createdAt) >= new Date(`${date}T00:00:00Z`)
+      )
+      .filter(
+        ({ lineItems }) =>
+          lineItems.edges.filter(({ node }) => skus.includes(node.sku)).length >
+          0
+      );
 
     const sales: { [sku: string]: Sale } = {};
     for (const order of orders) {

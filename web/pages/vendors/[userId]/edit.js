@@ -5,12 +5,16 @@ import redirect from "../../../api/redirect";
 import useRequest from "../../../hooks/use-request";
 
 const VendorEdit = ({ user }) => {
+  const [password, setPassword] = useState("");
   const [brands, setBrands] = useState(user.brands.join(","));
 
   const updateRequest = useRequest({
     url: `/api/auth/users/${user.id}`,
     method: "patch",
-    body: { brands: brands.split(",") },
+    body: {
+      ...(password === "" ? {} : { password }),
+      brands: brands.split(","),
+    },
     onSuccess: () => Router.push("/vendors"),
   });
 
@@ -36,6 +40,19 @@ const VendorEdit = ({ user }) => {
     <>
       <form onSubmit={onSubmit}>
         {updateRequest.errors}
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password (leave empty to keep current one)
+          </label>
+          <input
+            id="password"
+            className="form-control"
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={updateRequest.loading}
+          />
+        </div>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Brands (comma separated)

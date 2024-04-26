@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 
-import { validateRequest } from "@labelled/common";
+import { NotAuthorizedError, admins, validateRequest } from "@labelled/common";
 
 import { User } from "../../models/user";
-import { sign } from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -20,12 +19,11 @@ router.post(
   async (req: Request, res: Response) => {
     const { email, password, brands } = req.body;
 
-    const user = await User.createIfNotExists({ email, password, brands });
+    if (!admins.includes(email)) {
+      throw new NotAuthorizedError();
+    }
 
-    req.session!.jwt = sign(
-      { id: user.id, email: user.email, brands: user.brands },
-      process.env.JWT_KEY!
-    );
+    const user = await User.createIfNotExists({ email, password, brands });
 
     res.status(200).send(user);
   }
