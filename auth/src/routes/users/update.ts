@@ -21,22 +21,20 @@ router.patch(
   currentUser,
   requireAuth,
   async (req: Request, res: Response) => {
-    const { brands } = req.body;
-
-    const user = await User.findById(req.params.userId);
-
-    if (!user) {
-      throw new NotFoundError();
-    }
-
     if (!admins.includes(req.currentUser!.email)) {
       throw new NotAuthorizedError();
     }
 
-    user.set({ brands });
-    await user.save();
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      throw new NotFoundError();
+    }
 
-    return res.status(204).send(user);
+    const { email } = user;
+    const { password, brands } = req.body;
+    const updatedUser = await User.upsert({ email, password, brands });
+
+    return res.status(204).send(updatedUser);
   }
 );
 

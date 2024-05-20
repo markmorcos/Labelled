@@ -23,7 +23,7 @@ router.post(
       throw new NotAuthorizedError();
     }
 
-    const user = await User.createIfNotExists({ email, password, brands });
+    const user = await User.upsert({ email, password, brands });
 
     res.status(200).send(user);
   }

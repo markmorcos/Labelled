@@ -11,7 +11,7 @@ export interface UserAttrs {
 type UserDoc = Document & UserAttrs;
 
 interface UserModel extends Model<UserDoc> {
-  createIfNotExists: (user: UserAttrs) => UserDoc;
+  upsert: (user: UserAttrs) => UserDoc;
 }
 
 const userSchema: Schema<UserDoc> = new Schema(
@@ -41,7 +41,7 @@ userSchema.pre("save", async function (done) {
   done();
 });
 
-userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
+userSchema.statics.upsert = async (attrs: Partial<UserAttrs>) => {
   let user = await User.findOne({ email: attrs.email });
   if (user) {
     if (attrs.password) {
