@@ -5,7 +5,7 @@ export default ({ req }) => {
   const baseURL = {
     development:
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
-    production: "https://www.labelled-eg.com",
+    production: "https://www.app.labelled-eg.com",
   }[process.env.ENVIRONMENT];
 
   if (typeof window === "undefined") {

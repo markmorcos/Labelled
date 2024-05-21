@@ -7,18 +7,18 @@ metadata:
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: "www.labelled-eg.com"
+    service.beta.kubernetes.io/do-loadbalancer-hostname: "www.app.labelled-eg.com"
     cert-manager.io/cluster-issuer: "letsencrypt-production"
     kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
     - hosts:
-        - www.labelled-eg.com
-        - labelled-eg.com
+        - www.app.labelled-eg.com
+        - app.labelled-eg.com
       secretName: echo-tls
   ingressClassName: nginx
   rules:
-    - host: www.labelled-eg.com
+    - host: www.app.labelled-eg.com
       http:
         paths:
           - path: /api/auth/?(.*)
@@ -28,7 +28,7 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: www.labelled-eg.com
+    - host: www.app.labelled-eg.com
       http:
         paths:
           - path: /api/queries/?(.*)
@@ -38,7 +38,7 @@ spec:
                 name: queries-srv
                 port:
                   number: 3000
-    - host: www.labelled-eg.com
+    - host: www.app.labelled-eg.com
       http:
         paths:
           - path: /
