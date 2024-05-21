@@ -9,7 +9,7 @@ export default () => {
   const [brands, setBrands] = useState("");
 
   const { doRequest, loading, errors } = useRequest({
-    url: "/api/auth/sign-up",
+    url: "/api/auth/users",
     method: "post",
     body: { email, password, brands: brands.split(",") },
     onSuccess: () => Router.push("/vendors"),

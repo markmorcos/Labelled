@@ -11,6 +11,7 @@ import { signOutRouter } from "./routes/auth/sign-out";
 import { signUpRouter } from "./routes/auth/sign-up";
 
 import { indexAuthRouter } from "./routes/users";
+import { createAuthRouter } from "./routes/users/create";
 import { patchAuthRouter } from "./routes/users/update";
 import { readAuthRouter } from "./routes/users/read";
 import { deleteAuthRouter } from "./routes/users/delete";
@@ -32,6 +33,7 @@ app.use(signInRouter);
 app.use(signOutRouter);
 app.use(signUpRouter);
 
+app.use(createAuthRouter);
 app.use(readAuthRouter);
 app.use(indexAuthRouter);
 app.use(patchAuthRouter);
