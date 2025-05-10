@@ -28,16 +28,16 @@ app.use(
   })
 );
 
-app.use(currentUserRouter);
-app.use(signInRouter);
-app.use(signOutRouter);
-app.use(signUpRouter);
+app.use("/labelled", currentUserRouter);
+app.use("/labelled", signInRouter);
+app.use("/labelled", signOutRouter);
+app.use("/labelled", signUpRouter);
 
-app.use(createAuthRouter);
-app.use(readAuthRouter);
-app.use(indexAuthRouter);
-app.use(patchAuthRouter);
-app.use(deleteAuthRouter);
+app.use("/labelled", createAuthRouter);
+app.use("/labelled", readAuthRouter);
+app.use("/labelled", indexAuthRouter);
+app.use("/labelled", patchAuthRouter);
+app.use("/labelled", deleteAuthRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

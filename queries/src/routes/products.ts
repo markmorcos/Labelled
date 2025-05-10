@@ -8,7 +8,7 @@ import { Queries, fetchKey } from "../redis";
 const router = express.Router();
 
 router.get(
-  "/labelled/api/queries/products",
+  "/api/queries/products",
   requireAuth,
   async (req: Request, res: Response) => {
     const { email, brands } = req.currentUser!;

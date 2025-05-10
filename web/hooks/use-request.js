@@ -13,7 +13,7 @@ export default ({ url, method, body, onSuccess }) => {
     try {
       setLoading(true);
       setErrors(null);
-      const { data } = await axios[method](`${url}${queryParams}`, {
+      const { data } = await axios[method](`/labelled${url}${queryParams}`, {
         ...body,
         ...props,
       });
