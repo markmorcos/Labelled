@@ -2,3 +2,4 @@ node_modules
 build
 *.sh
 ignore
+.DS_Store

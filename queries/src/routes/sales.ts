@@ -17,7 +17,7 @@ interface Sale {
 const router = express.Router();
 
 router.get(
-  "/api/queries/sales",
+  "/labelled/api/queries/sales",
   requireAuth,
   async (req: Request, res: Response) => {
     const date = req.query.date || "2024-04-16";

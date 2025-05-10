@@ -19,14 +19,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd queries && docker build . -f Dockerfile.production -t markmorcos/labelled-queries
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/labelled-queries
-      - uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - run: doctl kubernetes cluster kubeconfig save labelled
-      - run: kubectl rollout restart deployment queries-depl
+      - run: cd queries && docker buildx create --use && docker buildx build --platform linux/arm64,linux/amd64 . -f Dockerfile.production -t markmorcos/labelled-queries --push

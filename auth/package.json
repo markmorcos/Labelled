@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --poll src/index.ts",
     "build": "tsc --project tsconfig.production.json",
-    "build:docker": "docker build . -f Dockerfile.production -t markmorcos/labelled-auth",
+    "build:docker": "docker buildx create --use && docker buildx build --platform linux/arm64,linux/amd64 . -f Dockerfile.production -t markmorcos/labelled-auth --push",
     "start": "node build/index.js"
   },
   "keywords": [],
