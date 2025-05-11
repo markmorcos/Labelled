@@ -12,5 +12,5 @@ export default ({ req }) => {
     });
   }
 
-  return axios.create({ baseURL: "/labelled" });
+  return axios.create();
 };
