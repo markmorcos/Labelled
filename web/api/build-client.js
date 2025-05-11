@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 
 export default ({ req }) => {
-  const baseURL = "https://mark.onthewifi.com/labelled";
+  const baseURL = "https://app.labelled-eg.com";
 
   if (typeof window === "undefined") {
     return axios.create({

@@ -21,8 +21,8 @@ app.use(
 );
 app.use(currentUser);
 
-app.use("/labelled", productsRouter);
-app.use("/labelled", salesRouter);
+app.use(productsRouter);
+app.use(salesRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

@@ -29,7 +29,7 @@ export default ({ currentUser }) => {
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
         <Link className="navbar-brand" href="/">
-          <img height="32" src="/labelled/logo.png" />
+          <img height="32" src="/logo.png" />
         </Link>
         <Navbar.Toggle aria-controls="navbar" />
         <Navbar.Collapse id="navbar">
