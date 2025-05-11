@@ -2,7 +2,11 @@ import axios from "axios";
 import https from "https";
 
 export default ({ req }) => {
-  const baseURL = "https://app.labelled-eg.com";
+  const baseURL = {
+    development:
+      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    production: "https://app.labelled-eg.com",
+  }[process.env.ENVIRONMENT];
 
   if (typeof window === "undefined") {
     return axios.create({

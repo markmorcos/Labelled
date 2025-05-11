@@ -24,3 +24,9 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - run: cd queries && docker buildx create --use && docker buildx build --platform linux/arm64,linux/amd64 . -f Dockerfile.production -t markmorcos/labelled-queries --push
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.RASPBERRY_PI_HOST }}
+          username: ${{ secrets.RASPBERRY_PI_USERNAME }}
+          password: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
+          script: kubectl rollout restart deployment queries-depl
