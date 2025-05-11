@@ -28,5 +28,7 @@ jobs:
         with:
           host: ${{ secrets.RASPBERRY_PI_HOST }}
           username: ${{ secrets.RASPBERRY_PI_USERNAME }}
-          password: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
-          script: kubectl rollout restart deployment queries-depl
+          key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
+          script: |
+            export KUBECONFIG=/home/mark/.kube/config
+            kubectl rollout restart deployment queries-depl
