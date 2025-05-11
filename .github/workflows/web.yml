@@ -33,4 +33,4 @@ jobs:
           key: ${{ secrets.RASPBERRY_PI_SSH_KEY }}
           script: |
             export KUBECONFIG=/home/mark/.kube/config
-            kubectl rollout restart deployment web-depl
+            kubectl rollout restart deployment web-depl -n labelled
