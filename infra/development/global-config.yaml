@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: global-config
-  namespace: labelled
 data:
-  ENVIRONMENT: production
+  ENVIRONMENT: development
+---
+

@@ -2,12 +2,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-srv
+  namespace: labelled
   annotations:
+    cert-manager.io/cluster-issuer: "infrastructure-issuer"
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - app.labelled-eg.com
+      secretName: infrastructure-tls
   rules:
-    - host: labelled.dev
+    - host: app.labelled-eg.com
       http:
         paths:
           - path: /api/auth/?(.*)
@@ -17,7 +25,7 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: labelled.dev
+    - host: app.labelled-eg.com
       http:
         paths:
           - path: /api/queries/?(.*)
@@ -27,13 +35,15 @@ spec:
                 name: queries-srv
                 port:
                   number: 3000
-    - host: labelled.dev
+    - host: app.labelled-eg.com
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: /?(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: web-srv
                 port:
                   number: 3000
+---
+

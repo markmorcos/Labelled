@@ -14,9 +14,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - run: doctl kubernetes cluster kubeconfig save labelled
-      - run: kubectl apply -f infra/common/init,infra/production/init -R --wait
-      - run: kubectl apply -f infra/common/k8s,infra/production/k8s -R --wait
+      - name: Loop and apply YAMLs over SSH stdin
+        run: |
+          echo "${{ secrets.RASPBERRY_PI_SSH_KEY }}" > /tmp/id_rsa
+          chmod 600 /tmp/id_rsa
+
+          cat infra/production/*.yaml infra/*.yaml | ssh -i /tmp/id_rsa -o StrictHostKeyChecking=no \
+          "${{ secrets.RASPBERRY_PI_USERNAME }}@${{ secrets.RASPBERRY_PI_HOST }}" \
+          "export KUBECONFIG=/home/mark/.kube/config && kubectl apply -f -"
