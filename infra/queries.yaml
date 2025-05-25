@@ -1,55 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: queries-redis-pvc
-  namespace: labelled
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: queries-redis-depl
-  namespace: labelled
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: queries-redis
-  template:
-    metadata:
-      labels:
-        app: queries-redis
-    spec:
-      containers:
-        - name: queries-redis
-          image: redis
-          volumeMounts:
-            - name: queries-redis-storage
-              mountPath: /data
-      volumes:
-        - name: queries-redis-storage
-          persistentVolumeClaim:
-            claimName: queries-redis-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: queries-redis-srv
-  namespace: labelled
-spec:
-  selector:
-    app: queries-redis
-  ports:
-    - name: db
-      protocol: TCP
-      port: 6379
-      targetPort: 6379
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -85,7 +33,10 @@ spec:
             - name: SHOPIFY_STORE
               value: "5c1dc6-2.myshopify.com"
             - name: REDIS_HOST
-              value: queries-redis-srv
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: REDIS_HOST
 ---
 apiVersion: v1
 kind: Service
