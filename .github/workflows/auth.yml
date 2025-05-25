@@ -14,7 +14,7 @@ jobs:
       - run: cd auth && npm install && npm run build
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
@@ -23,7 +23,10 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: cd auth && docker buildx create --use && docker buildx build --platform linux/arm64,linux/amd64 . -f Dockerfile.production -t markmorcos/labelled-auth --push
+      - run: |
+          cd auth
+          docker build . -f Dockerfile.production -t markmorcos/labelled-auth
+          docker push markmorcos/labelled-auth
       - uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.RASPBERRY_PI_HOST }}

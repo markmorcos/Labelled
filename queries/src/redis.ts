@@ -4,7 +4,7 @@ import { productVariantsQuery } from "./graphql/products";
 import { ordersQuery } from "./graphql/orders";
 
 export const client = redis.createClient({
-  url: `redis://${process.env.REDIS_HOST}:6379`,
+  url: process.env.REDIS_HOST,
 });
 
 client.on("error", (err) => console.log("Could not connect to REDIS", err));
@@ -12,8 +12,8 @@ client.on("error", (err) => console.log("Could not connect to REDIS", err));
 const INTERVAL = 5 * 60 * 1000;
 
 export enum Queries {
-  products = "products",
-  orders = "orders",
+  products = "labelled:products",
+  orders = "labelled:orders",
 }
 
 const queries = [
@@ -31,9 +31,9 @@ const updateCache = async (key?: string) =>
   );
 
 export const fetchKey = async (key: string): Promise<any> => {
-  const cachedProducts = await client.get(key);
-  if (cachedProducts) {
-    return JSON.parse(cachedProducts);
+  const cached = await client.get(key);
+  if (cached) {
+    return JSON.parse(cached);
   }
   await updateCache(key);
   return fetchKey(key);

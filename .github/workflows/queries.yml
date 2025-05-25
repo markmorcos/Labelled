@@ -14,7 +14,7 @@ jobs:
       - run: cd queries && npm install && npm run build
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
@@ -23,7 +23,10 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: cd queries && docker buildx create --use && docker buildx build --platform linux/arm64,linux/amd64 . -f Dockerfile.production -t markmorcos/labelled-queries --push
+      - run: |
+          cd queries
+          docker build . -f Dockerfile.production -t markmorcos/labelled-queries
+          docker push markmorcos/labelled-queries
       - uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.RASPBERRY_PI_HOST }}
